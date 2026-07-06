@@ -142,6 +142,13 @@ then move schema.prisma file to schema folder
 now all schma wiil be created insde the schem folder
 
 
+inside schema.prisma folder :
+output   = "../generated/prisma"
+change to 
+output   = "../../generated/prisma"
+/// to generate the generate folder indide root folder 
+
+
 
 
 
