@@ -130,6 +130,21 @@ import prisma client again insde the prisma.ts
 
 
 
+inside prisma.config.js 
+schema: "prisma/schema.prisma", 
+change to 
+schema: "prisma/schema", /// pointing to schem folder
+                        
+
+
+create schema folder inside the prisma folder
+then move schema.prisma file to schema folder 
+now all schma wiil be created insde the schem folder
+
+
+
+
+
 
 
 
