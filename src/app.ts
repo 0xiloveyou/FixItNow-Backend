@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 // import httpStatus from "http-status"
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { technicianRoutes } from "./modules/technician/technician.route";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
@@ -99,7 +100,7 @@ app.get("/", async (req : Request, res: Response) => {
 
 app.use("/api/auth/user", userRoutes)
 app.use("/api/auth", authRoutes)
-app.use("/api/technician")
+app.use("/api/technician", technicianRoutes)
 // app.use("/api/posts", postRoutes)
 // app.use("/api/comments", commentRoutes)
 // app.use("/api/subscription", subscriptionRoutes)
