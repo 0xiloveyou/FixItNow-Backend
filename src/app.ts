@@ -16,10 +16,10 @@ import cookieParser from "cookie-parser";
 
 const app : Application = express()
 
-// app.use(cors({
-//    origin : config.app_url,
-//    credentials : true, // because of token and cokkie rretated stuff
-// }))
+app.use(cors({
+   origin : config.app_url,
+   credentials : true, // because of token and cokkie rretated stuff
+}))
 
 
 // const endpointSecret = config.stripe_webhook_secret
