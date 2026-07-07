@@ -8,7 +8,7 @@ import cookieParser from "cookie-parser";
 // import { commentRoutes } from "./modules/comment/comment.route";
 // import { notFound } from "./middlewares/notFound";
 // import httpStatus from "http-status"
-// import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
