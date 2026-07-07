@@ -97,8 +97,8 @@ app.get("/", async (req : Request, res: Response) => {
    res.send("Hello, world!");
  })
 
-app.use("/api/user", userRoutes)
-app.use("/api/auth", authRoutes)
+app.use("/api/auth/user", userRoutes)
+// app.use("/api/auth", authRoutes)
 // app.use("/api/posts", postRoutes)
 // app.use("/api/comments", commentRoutes)
 // app.use("/api/subscription", subscriptionRoutes)
