@@ -1,7 +1,7 @@
 import express, { Application, NextFunction, request, Request, Response, Router } from "express";
 import cors from "cors"
 import config from "./config";
-// import { userRoutes } from "./modules/user/user.route";
+import { userRoutes } from "./modules/user/user.route";
 // import { authRoutes } from "./modules/auth/auth.routes";
 import cookieParser from "cookie-parser";
 // import { postRoutes } from "./modules/post/post.route";
@@ -119,8 +119,6 @@ app.use("/api/user", userRoutes)
 // app.use(notFound)
 
 
-// /// all 4 paramiter is must 
-// // first err & last next 
 app.use(globalErrorHandler)
 
 export default app;
