@@ -26,9 +26,8 @@ const getMyProfile = catchAsync(
           res : Response,
           next : NextFunction) => {
 
-   const {accessToken} = req.cookies
-   const user = await userService.getUserProfileFromDB(accessToken)
-
+   
+   const user = await userService.getUserProfileFromDB(req.user?.id as string)
    sendResponse (res, {
       success : true,
       statusCode : httpStatus.CREATED,
@@ -38,8 +37,25 @@ const getMyProfile = catchAsync(
 })
 
 
+const updateMyProfile = catchAsync( async (req : Request, res : Response, next : NextFunction) => {
+   
+   const userId = req.user?.id as string
+   const payload= req.body
+   
+   const updatedProfile = await userService.updateMyProfileInDB(userId, payload)
+
+   sendResponse(res, {
+      success : true,
+      statusCode : httpStatus.OK,
+      message : "user profile updated successfully",
+      data : {updatedProfile} 
+   })
+})
+
+
 
 export const userController = {
    registerUser,
    getMyProfile,
+   updateMyProfile
 }

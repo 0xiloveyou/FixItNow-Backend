@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs"
 import config from "../../config"
 import { prisma } from "../../lib/prisma"
 import { Role } from "../../../generated/prisma/enums"
-import { RegisterUserPayload } from "./user.interface"
+import { RegisterUserPayload, UpdateUserProfilePayload } from "./user.interface"
 
 const registerUserIntoDB = async (payload : RegisterUserPayload) => {
 
@@ -47,13 +47,12 @@ const registerUserIntoDB = async (payload : RegisterUserPayload) => {
 }
 
 
-const getUserProfileFromDB = async (payload : RegisterUserPayload) => {
-
-   const { email}    = payload
-
+const getUserProfileFromDB = async (userId : string) => {
    
    const isUserExist = await prisma.user.findUnique({
-      where : {email}
+      where : {
+         id : userId
+      }
    })
 
    if(!isUserExist){
@@ -62,7 +61,7 @@ const getUserProfileFromDB = async (payload : RegisterUserPayload) => {
 
    const user  = await prisma.user.findUnique({
       where : {
-         email : isUserExist.email || email
+         id : userId
       },
       omit : {
          password : true
@@ -71,8 +70,32 @@ const getUserProfileFromDB = async (payload : RegisterUserPayload) => {
 
    return user
 }
+
+
+
+const updateMyProfileInDB = async (userId : string, payload : UpdateUserProfilePayload) => {
+   const {name, phone, profileImage} =  payload
+
+   // user exist or not --> auto handled by auth middleware
+   const updatedUser = await prisma.user.update({
+      where : {
+         id : userId
+      },
+      data : {
+         name ,
+         phone,
+         profileImage,
+      },
+      omit : {
+         password : true
+      },
+   })
+   return updatedUser
+}
+
  
 export const userService = {
    registerUserIntoDB,
-   getUserProfileFromDB
+   getUserProfileFromDB,
+   updateMyProfileInDB,
 }

@@ -8,3 +8,8 @@ export interface RegisterUserPayload {
     role : Role
     phone ?: string;
 }
+export interface UpdateUserProfilePayload {
+    name : string;
+    profileImage?: string;
+    phone ?: string;
+}
