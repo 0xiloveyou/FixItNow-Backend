@@ -121,6 +121,6 @@ app.use("/api/user", userRoutes)
 
 // /// all 4 paramiter is must 
 // // first err & last next 
-// app.use(globalErrorHandler)
+app.use(globalErrorHandler)
 
 export default app;
