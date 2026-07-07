@@ -22,6 +22,24 @@ const createTechnicianProfile = catchAsync(
 })
 
 
+const getMyProfile = catchAsync(
+   async (req : Request,
+          res : Response,
+          next : NextFunction) => {
+
+   const id = req.user?.id
+   const profile = await technicianSercive.getMyProfileFormDB(id as string)
+
+   sendResponse (res, {
+      success : true,
+      statusCode : httpStatus.CREATED,
+      message : "Thecnician Profile retrived sucessfully",
+      data : {profile}
+   })
+})
+
+
 export const technicianController = {
-  createTechnicianProfile,      
+  createTechnicianProfile, 
+  getMyProfile,     
 }

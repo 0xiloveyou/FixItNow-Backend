@@ -8,5 +8,9 @@ router.post(
     "/profile",
     auth(Role.ADMIN, Role.TECHNICIAN),
     technicianController.createTechnicianProfile)
+router.get("/me", 
+    auth(Role.ADMIN, Role.TECHNICIAN),
+    technicianController.getMyProfile)
+
 
 export const technicianRoutes = router

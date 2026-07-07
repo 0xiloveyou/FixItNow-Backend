@@ -28,8 +28,24 @@ const  createTechnicianProfileIntoDB = async (Id : string, payload : TechnicianP
    return profile
 }
 
+const  getMyProfileFormDB = async (Id : string) => {
+
+   console.log(Id)
+   const isExist = await prisma.technicianProfile.findUnique({
+     where: {
+      userId : Id
+    }
+   })
+
+   if(!isExist){
+     throw new Error("Technician profile not found")
+   }
+
+   return isExist
+}
+
 
 export const technicianSercive = {
   createTechnicianProfileIntoDB,
-
+  getMyProfileFormDB
 }
