@@ -20,7 +20,26 @@ const registerUser = catchAsync(
    })
 })
 
+
+const getMyProfile = catchAsync(
+   async (req : Request,
+          res : Response,
+          next : NextFunction) => {
+
+   const {accessToken} = req.cookies
+   const user = await userService.getUserProfileFromDB(accessToken)
+
+   sendResponse (res, {
+      success : true,
+      statusCode : httpStatus.CREATED,
+      message : "User profile retrive sucessfully",
+      data : {user}
+   })
+})
+
+
+
 export const userController = {
    registerUser,
-   
+   getMyProfile,
 }

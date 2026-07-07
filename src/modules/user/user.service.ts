@@ -45,8 +45,34 @@ const registerUserIntoDB = async (payload : RegisterUserPayload) => {
    })
    return user
 }
+
+
+const getUserProfileFromDB = async (payload : RegisterUserPayload) => {
+
+   const { email}    = payload
+
+   
+   const isUserExist = await prisma.user.findUnique({
+      where : {email}
+   })
+
+   if(!isUserExist){
+      throw new Error("User not found")
+   }
+
+   const user  = await prisma.user.findUnique({
+      where : {
+         email : isUserExist.email || email
+      },
+      omit : {
+         password : true
+      }
+   })
+
+   return user
+}
  
 export const userService = {
    registerUserIntoDB,
-
+   getUserProfileFromDB
 }
