@@ -2,13 +2,13 @@ import express, { Application, NextFunction, request, Request, Response, Router 
 import cors from "cors"
 import config from "./config";
 import { userRoutes } from "./modules/user/user.route";
-// import { authRoutes } from "./modules/auth/auth.routes";
 import cookieParser from "cookie-parser";
 // import { postRoutes } from "./modules/post/post.route";
 // import { commentRoutes } from "./modules/comment/comment.route";
 // import { notFound } from "./middlewares/notFound";
 // import httpStatus from "http-status"
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { authRoutes } from "./modules/auth/auth.routes";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
@@ -98,7 +98,7 @@ app.get("/", async (req : Request, res: Response) => {
  })
 
 app.use("/api/auth/user", userRoutes)
-// app.use("/api/auth", authRoutes)
+app.use("/api/auth", authRoutes)
 // app.use("/api/posts", postRoutes)
 // app.use("/api/comments", commentRoutes)
 // app.use("/api/subscription", subscriptionRoutes)
