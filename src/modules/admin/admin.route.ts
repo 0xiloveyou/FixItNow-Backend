@@ -15,5 +15,10 @@ router.get(
   auth(Role.ADMIN),
   adminController.getSingleUser
 )
+router.patch(
+  "/users/:id/status",
+  auth(Role.ADMIN),
+  adminController.updateUserStatus
+);
 
 export const adminRoutes = router
