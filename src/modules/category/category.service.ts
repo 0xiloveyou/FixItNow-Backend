@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs"
 import config from "../../config"
 import { prisma } from "../../lib/prisma"
 import { Role } from "../../../generated/prisma/enums"
-import { ICategoryPayload } from "./category.interface"
+import { ICategoryPayload, IUpdateCategoryPayload } from "./category.interface"
 
 const createCategoryIntoDB = async (payload : ICategoryPayload) => {
 
@@ -26,6 +26,43 @@ const createCategoryIntoDB = async (payload : ICategoryPayload) => {
    return createdCategory
 }
 
+
+const updateCategoryIntoDB = async (
+  id: string,
+  payload: IUpdateCategoryPayload
+) => {
+
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    }
+  })
+
+  if (!category) {
+    throw new Error("Category not found");
+  }
+
+  if (payload.name) {
+    const existingCategory = await prisma.category.findUnique({
+      where: {
+        name: payload.name,
+      }
+    })
+
+    if (existingCategory && existingCategory.id !== id) {
+      throw new Error("Category name already exists");
+    }
+  }
+
+  const updatedCategory = await prisma.category.update({
+    where: {
+      id,
+    },
+    data: payload,
+  })
+
+  return updatedCategory
+}
 
 // const getUserProfileFromDB = async (userId : string) => {
    
@@ -77,5 +114,6 @@ const createCategoryIntoDB = async (payload : ICategoryPayload) => {
 
 
 export const categoryService = {
-   createCategoryIntoDB
+   createCategoryIntoDB,
+   updateCategoryIntoDB
 }

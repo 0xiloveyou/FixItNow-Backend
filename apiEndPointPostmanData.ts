@@ -23,6 +23,18 @@ create category -> amidn access
   "description": "Home, office, kitchen, bathroom, and deep cleaning services."
 }
 
+{
+  "name": "Painting",
+  "icon": "https://cdn-icons-png.flaticon.com/512/2965/2965567.png",
+  "description": "Interior and exterior wall painting, polishing, and finishing."
+}
+
+{
+  "name": "AC Repair",
+  "icon": "https://cdn-icons-png.flaticon.com/512/2933/2933245.png",
+  "description": "Air conditioner installation, servicing, gas refill, and repair."
+}
+
 ///-------------------------------------
 
 
