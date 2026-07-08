@@ -11,6 +11,10 @@ router.post(
 router.get("/me", 
     auth(Role.ADMIN, Role.TECHNICIAN),
     technicianController.getMyProfile)
+router.patch(
+    "/me", 
+    auth(Role.ADMIN, Role.TECHNICIAN),
+    technicianController.updateProfile)
 
 
 export const technicianRoutes = router
