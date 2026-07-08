@@ -71,9 +71,28 @@ const getAllCategories = catchAsync(
   }
 )
 
+
+const getSingleCategory = catchAsync(
+  async (req: Request, res: Response) => {
+
+    const { id } = req.params
+
+    const result = await categoryService.getSingleCategoryFromDB(id as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category retrieved successfully",
+      data: result,
+    })
+  }
+)
+
 export const categoryController = {
   createCategory,
   updateCategory,
   deleteCategory,
   getAllCategories,
+  getSingleCategory,
+
 }

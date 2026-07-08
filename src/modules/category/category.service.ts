@@ -94,9 +94,24 @@ const getAllCategoriesFromDB = async () => {
   return categories
 }
 
+const getSingleCategoryFromDB = async (id: string) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+  })
+
+  if (!category) {
+    throw new Error("Category not found");
+  }
+
+  return category
+}
+
 export const categoryService = {
    createCategoryIntoDB,
    updateCategoryIntoDB,
    deleteCategoryFromDB,
-   getAllCategoriesFromDB
+   getAllCategoriesFromDB,
+   getSingleCategoryFromDB
 }
