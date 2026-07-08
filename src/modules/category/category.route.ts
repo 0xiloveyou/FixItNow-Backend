@@ -20,6 +20,8 @@ router.delete(
   auth(Role.ADMIN),
   categoryController.deleteCategory
 )
-
+router.get(
+  "/", 
+  categoryController.getAllCategories)
 
 export const categoryRoutes = router

@@ -43,7 +43,7 @@ const updateCategory = catchAsync(
 
 const deleteCategory = catchAsync(
   async (req: Request, res: Response) => {
-    
+
     const { id } = req.params
 
     await categoryService.deleteCategoryFromDB(id as string);
@@ -57,8 +57,23 @@ const deleteCategory = catchAsync(
   }
 )
 
+
+const getAllCategories = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await categoryService.getAllCategoriesFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Categories retrieved successfully",
+      data: result,
+    })
+  }
+)
+
 export const categoryController = {
   createCategory,
   updateCategory,
   deleteCategory,
+  getAllCategories,
 }
