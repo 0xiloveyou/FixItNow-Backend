@@ -16,5 +16,10 @@ router.patch(
   auth(Role.TECHNICIAN),
   serviceController.updateService
 )
+router.delete(
+  "/:id",
+  auth(Role.TECHNICIAN),
+  serviceController.deleteService
+)
 
 export const serviceRoutes = router

@@ -84,8 +84,47 @@ const updateServiceIntoDB = async (
   })
 }
 
+
+const deleteServiceFromDB = async (
+  serviceId: string,
+  userId: string
+) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: {
+      userId,
+    },
+  })
+
+  if (!technician) {
+    throw new Error("Technician profile not found");
+  }
+
+  const service = await prisma.service.findUnique({
+    where: {
+      id: serviceId,
+    },
+  })
+
+  if (!service) {
+    throw new Error("Service not found");
+  }
+
+  if (service.technicianId !== technician.id) {
+    throw new Error("You are not authorized to delete this service");
+  }
+
+  await prisma.service.delete({
+    where: {
+      id: serviceId,
+    },
+  })
+
+  return null
+}
+
 export const serviceService = {
   createServiceIntoDB,
   updateServiceIntoDB,
+  deleteServiceFromDB,
   
 }
