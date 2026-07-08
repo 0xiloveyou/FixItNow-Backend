@@ -12,6 +12,7 @@ import { authRoutes } from "./modules/auth/auth.routes";
 import { technicianRoutes } from "./modules/technician/technician.route";
 import { categoryRoutes } from "./modules/category/category.route";
 import { serviceRoutes } from "./modules/service/service.route";
+import { adminRoutes } from "./modules/admin/admin.route";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
@@ -105,6 +106,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/technician", technicianRoutes)
 app.use("/api/category", categoryRoutes)
 app.use("/api/service", serviceRoutes)
+app.use("/api/admin", adminRoutes)
 
 
 // /// sometimes we hit unknown url
