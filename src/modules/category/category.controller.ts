@@ -41,40 +41,24 @@ const updateCategory = catchAsync(
   }
 )
 
+const deleteCategory = catchAsync(
+  async (req: Request, res: Response) => {
+    
+    const { id } = req.params
 
-// const getMyProfile = catchAsync(
-//    async (req : Request,
-//           res : Response,
-//           next : NextFunction) => {
+    await categoryService.deleteCategoryFromDB(id as string);
 
-   
-//    const user = await userService.getUserProfileFromDB(req.user?.id as string)
-//    sendResponse (res, {
-//       success : true,
-//       statusCode : httpStatus.CREATED,
-//       message : "User profile retrive sucessfully",
-//       data : {user}
-//    })
-// })
-
-
-// const updateMyProfile = catchAsync( async (req : Request, res : Response, next : NextFunction) => {
-   
-//    const userId = req.user?.id as string
-//    const payload= req.body
-   
-//    const updatedProfile = await userService.updateMyProfileInDB(userId, payload)
-
-//    sendResponse(res, {
-//       success : true,
-//       statusCode : httpStatus.OK,
-//       message : "user profile updated successfully",
-//       data : {updatedProfile} 
-//    })
-// })
-
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category deleted successfully",
+      data: null,
+    })
+  }
+)
 
 export const categoryController = {
   createCategory,
-  updateCategory
+  updateCategory,
+  deleteCategory,
 }

@@ -15,7 +15,11 @@ router.patch(
   auth(Role.ADMIN),
   categoryController.updateCategory)
 
-
+router.delete(
+  "/:id",
+  auth(Role.ADMIN),
+  categoryController.deleteCategory
+)
 
 
 export const categoryRoutes = router

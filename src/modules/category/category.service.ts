@@ -64,56 +64,29 @@ const updateCategoryIntoDB = async (
   return updatedCategory
 }
 
-// const getUserProfileFromDB = async (userId : string) => {
-   
-//    const isUserExist = await prisma.user.findUnique({
-//       where : {
-//          id : userId
-//       }
-//    })
+const deleteCategoryFromDB = async (id: string) => {
+  const category = await prisma.category.findUnique({
+    where: {
+      id,
+    },
+  })
 
-//    if(!isUserExist){
-//       throw new Error("User not found")
-//    }
+  if (!category) {
+    throw new Error("Category not found");
+  }
 
-//    const user  = await prisma.user.findUnique({
-//       where : {
-//          id : userId
-//       },
-//       omit : {
-//          password : true
-//       }
-//    })
+  await prisma.category.delete({
+    where: {
+      id,
+    },
+  })
 
-//    return user
-// }
-
-
-
-// const updateMyProfileInDB = async (userId : string, payload : UpdateUserProfilePayload) => {
-//    const {name, phone, profileImage} =  payload
-
-//    // user exist or not --> auto handled by auth middleware
-//    const updatedUser = await prisma.user.update({
-//       where : {
-//          id : userId
-//       },
-//       data : {
-//          name ,
-//          phone,
-//          profileImage,
-//       },
-//       omit : {
-//          password : true
-//       },
-//    })
-//    return updatedUser
-// }
-
- 
+  return null
+}
 
 
 export const categoryService = {
    createCategoryIntoDB,
-   updateCategoryIntoDB
+   updateCategoryIntoDB,
+   deleteCategoryFromDB
 }
