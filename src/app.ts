@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import { globalErrorHandler } from "./middlewares/globalErrorHandler";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { technicianRoutes } from "./modules/technician/technician.route";
+import { categoryRoutes } from "./modules/category/category.route";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
@@ -101,10 +102,8 @@ app.get("/", async (req : Request, res: Response) => {
 app.use("/api/auth/user", userRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/technician", technicianRoutes)
-// app.use("/api/posts", postRoutes)
-// app.use("/api/comments", commentRoutes)
-// app.use("/api/subscription", subscriptionRoutes)
-// app.use("/api/premium", premiumRoutes)
+app.use("/api/category", categoryRoutes)
+
 
 // /// sometimes we hit unknown url
 // /*

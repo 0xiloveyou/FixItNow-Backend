@@ -11,4 +11,4 @@ model Category {
   services Service[]
 
   @@map("categories")
-}
+} 
