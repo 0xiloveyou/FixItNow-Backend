@@ -11,4 +11,10 @@ router.post(
   serviceController.createService
 )
 
+router.patch(
+  "/:id",
+  auth(Role.TECHNICIAN),
+  serviceController.updateService
+)
+
 export const serviceRoutes = router

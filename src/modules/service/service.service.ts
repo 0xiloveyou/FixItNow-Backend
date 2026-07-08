@@ -47,7 +47,45 @@ const createServiceIntoDB = async (
   return service
 }
 
+const updateServiceIntoDB = async (
+  serviceId: string,
+  userId: string,
+  payload: Partial<IServicePayload>
+) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: {
+      userId,
+    },
+  })
+
+  if (!technician) {
+    throw new Error("Technician profile not found");
+  }
+
+  const service = await prisma.service.findUnique({
+    where: {
+      id: serviceId,
+    },
+  })
+
+  if (!service) {
+    throw new Error("Service not found");
+  }
+
+  if (service.technicianId !== technician.id) {
+    throw new Error("You are not authorized to update this service");
+  }
+
+  return await prisma.service.update({
+    where: {
+      id: serviceId,
+    },
+    data: payload,
+  })
+}
+
 export const serviceService = {
   createServiceIntoDB,
-
+  updateServiceIntoDB,
+  
 }

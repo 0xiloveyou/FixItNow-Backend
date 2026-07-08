@@ -42,6 +42,17 @@ service
 
 ///create sercice 
 
+{
+  "categoryId": "1f77e4f1-4f04-47d0-9308-aa5b8cc8e4f4",
+  "title": "Bathroom Pipe Repair",
+  "description": "Fix leaking pipes and replace damaged fittings.",
+  "price": 500,
+  "duration": 60
+}
+
+
+-----
+
 
 
 
