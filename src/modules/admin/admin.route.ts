@@ -10,4 +10,10 @@ router.get(
   auth(Role.ADMIN),
   adminController.getAllUsers)
 
+router.get(
+  "/users/:id",
+  auth(Role.ADMIN),
+  adminController.getSingleUser
+)
+
 export const adminRoutes = router

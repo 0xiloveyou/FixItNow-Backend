@@ -24,6 +24,32 @@ const getAllUsersFromDB = async () => {
   return users;
 }
 
+const getSingleUserFromDB = async (id: string) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      profileImage: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  return user;
+};
+
 export const adminService = {
-  getAllUsersFromDB
+  getAllUsersFromDB,
+  getSingleUserFromDB
 }
