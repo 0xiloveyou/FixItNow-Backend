@@ -18,4 +18,10 @@ router.get(
   availabilityController.getMyAvailability
 );
 
+router.patch(
+  "/:id",
+  auth(Role.TECHNICIAN),
+  availabilityController.updateAvailability
+);
+
 export const availabilityRoutes = router
