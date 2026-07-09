@@ -3,6 +3,7 @@ import { sendResponse } from "../../utils/sendResponse"
 import httpStatus from "http-status"
 import { NextFunction, Request, Response} from "express";
 import { technicianSercive } from "./technician.service";
+import { availabilityService } from "../availability/availability.service";
 
 const createTechnicianProfile = catchAsync(
    async (req : Request,
@@ -55,9 +56,10 @@ const updateProfile = catchAsync(
    })
 })
 
-
 export const technicianController = {
   createTechnicianProfile, 
   getMyProfile,   
-  updateProfile  
+  updateProfile,
+
+
 }

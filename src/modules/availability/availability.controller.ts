@@ -64,7 +64,7 @@ const deleteAvailability = catchAsync(
     const { id } = req.params;
     const userId = req.user?.id as string;
 
-    await availabilityService.deleteAvailabilityFromDB(id, userId);
+    await availabilityService.deleteAvailabilityFromDB(id as string, userId);
 
     sendResponse(res, {
       success: true,
@@ -75,12 +75,31 @@ const deleteAvailability = catchAsync(
   }
 );
 
+const getTechnicianAvailability = catchAsync(
+  async (req: Request, res: Response) => {
+    const { technicianId } = req.params;
+
+    const result =
+      await availabilityService.getTechnicianAvailabilityFromDB(
+        technicianId as string
+      );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Technician availability retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const availabilityController = {
   createAvailability,
   getMyAvailability,
   updateAvailability,
   deleteAvailability,
-  
+  getTechnicianAvailability,
+
 }
 
 

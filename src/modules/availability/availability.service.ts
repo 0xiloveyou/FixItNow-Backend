@@ -155,11 +155,42 @@ const deleteAvailabilityFromDB = async (
   return null;
 };
 
+const getTechnicianAvailabilityFromDB = async (
+  technicianId: string
+) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: {
+      id: technicianId,
+    },
+  });
+
+  if (!technician) {
+    throw new Error("Technician not found");
+  }
+
+  const availabilities = await prisma.availability.findMany({
+    where: {
+      technicianId,
+      status: "AVAILABLE",
+    },
+    orderBy: [
+      {
+        date: "asc",
+      },
+      {
+        startTime: "asc",
+      },
+    ],
+  });
+
+  return availabilities;
+};
+
 
 export const availabilityService = {
   createAvailabilityIntoDB,
   getMyAvailabilityFromDB,
   updateAvailabilityIntoDB,
   deleteAvailabilityFromDB,
-  
+  getTechnicianAvailabilityFromDB,
 }

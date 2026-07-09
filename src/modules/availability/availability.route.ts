@@ -30,4 +30,9 @@ router.delete(
   availabilityController.deleteAvailability
 );
 
+router.get(
+  "/technician/:technicianId",
+  availabilityController.getTechnicianAvailability
+);
+
 export const availabilityRoutes = router

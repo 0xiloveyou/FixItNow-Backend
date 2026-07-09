@@ -17,4 +17,5 @@ router.patch(
     technicianController.updateProfile)
 
 
+
 export const technicianRoutes = router

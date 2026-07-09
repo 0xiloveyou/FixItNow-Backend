@@ -78,5 +78,7 @@ const  updateProfileFormDB = async (Id : string, payload : TechnicianProfileUpda
 export const technicianSercive = {
   createTechnicianProfileIntoDB,
   getMyProfileFormDB,
-  updateProfileFormDB
+  updateProfileFormDB,
+
+
 }
