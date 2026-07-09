@@ -122,9 +122,39 @@ const deleteServiceFromDB = async (
   return null
 }
 
+const getSingleServiceFromDB = async (id: string) => {
+  const service = await prisma.service.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      category: true,
+      technician: {
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              // email: true,
+              phone: true,
+              profileImage: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!service) {
+    throw new Error("Service not found");
+  }
+
+  return service;
+};
+
 export const serviceService = {
   createServiceIntoDB,
   updateServiceIntoDB,
   deleteServiceFromDB,
-  
+  getSingleServiceFromDB,
 }

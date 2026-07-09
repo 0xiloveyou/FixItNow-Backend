@@ -18,8 +18,12 @@ router.patch(
 )
 router.delete(
   "/:id",
-  auth(Role.TECHNICIAN),
+  auth(Role.TECHNICIAN, Role.ADMIN),
   serviceController.deleteService
 )
+
+router.get("/:id", serviceController.getSingleService)
+
+
 
 export const serviceRoutes = router
