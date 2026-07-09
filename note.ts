@@ -150,8 +150,42 @@ output   = "../../generated/prisma"
 
 
 
+///-------------------
+
+stripe 
+
+npm i stripe
+
+then inside lib folder : 
+create -> stripe.ts
 
 
+----
+
+npm i -g @stripe/cli   -> install strpie cli
+
+stripe login  -> to log in -> if url -> ctrl + click on tah url to enter
+if error appares then we need to configer .env file 
+
+--
+after middlewer api end point set  up then :
+
+go to pakage.json :
+
+insde "script" to make a new secrept
+
+after "start" :
+
+"stripe:webhook" : "stripe listen --forward-to localhost:5000/api/payments/webhook",
+
+
+now on terminal : 
+npm run stripe:webhook
+
+
+now add the secret to env
+
+-------
 
 
 
