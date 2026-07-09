@@ -18,6 +18,12 @@ router.get(
 );
 
 router.get(
+  "/technician",
+  auth(Role.TECHNICIAN),
+  bookingController.getTechnicianBookings
+);
+
+router.get(
   "/my",
   auth(Role.CUSTOMER),
   bookingController.getMyBookings)
@@ -33,6 +39,7 @@ router.patch(
   auth(Role.CUSTOMER),
   bookingController.cancelBooking
 );
+
 
 
 
