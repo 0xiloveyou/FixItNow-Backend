@@ -3,7 +3,7 @@ import { sendResponse } from "../../utils/sendResponse"
 import httpStatus from "http-status"
 import { NextFunction, Request, Response} from "express";
 import { userService } from "./user.service";
-
+ 
 const registerUser = catchAsync(
    async (req : Request,
           res : Response,
@@ -57,5 +57,5 @@ const updateMyProfile = catchAsync( async (req : Request, res : Response, next :
 export const userController = {
    registerUser,
    getMyProfile,
-   updateMyProfile
+   updateMyProfile,
 }

@@ -33,6 +33,19 @@ const createServiceIntoDB = async (
     throw new Error("Category not found");
   }
 
+  const existingService = await prisma.service.findFirst({
+  where: {
+    technicianId: technicianProfile.id,
+    categoryId,
+  },
+});
+
+if (existingService) {
+  throw new Error(
+    "You have already created a service for this category."
+  );
+}
+
 
   const service = await prisma.service.create({
     data: {
@@ -275,10 +288,38 @@ const getAllServicesFromDB = async (query: Record<string, any>) => {
   };
 };
 
+
+const getMyServicesFromDB = async (userId: string) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!technician) {
+    throw new Error("Technician profile not found");
+  }
+
+  const services = await prisma.service.findMany({
+    where: {
+      technicianId: technician.id,
+    },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return services;
+};
+
 export const serviceService = {
   createServiceIntoDB,
   updateServiceIntoDB,
   deleteServiceFromDB,
   getSingleServiceFromDB,
-  getAllServicesFromDB
+  getAllServicesFromDB,
+  getMyServicesFromDB,
 }

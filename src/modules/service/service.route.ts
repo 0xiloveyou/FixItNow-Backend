@@ -10,7 +10,11 @@ router.post(
   auth(Role.TECHNICIAN),
   serviceController.createService
 )
-
+router.get(
+  "/me",
+  auth(Role.TECHNICIAN),
+  serviceController.getMyServices
+)
 router.patch(
   "/:id",
   auth(Role.TECHNICIAN),
@@ -24,6 +28,6 @@ router.delete(
 
 router.get("/:id", serviceController.getSingleService)
 router.get("/", serviceController.getAllServices);
-
+ 
 
 export const serviceRoutes = router

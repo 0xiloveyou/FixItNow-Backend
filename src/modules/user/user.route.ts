@@ -7,5 +7,6 @@ const router = Router()
 router.post("/register", userController.registerUser)
 router.get("/me", auth(Role.ADMIN, Role.CUSTOMER, Role.TECHNICIAN),  userController.getMyProfile)
 router.patch("/me",auth(Role.ADMIN, Role.CUSTOMER, Role.TECHNICIAN), userController.updateMyProfile)
+ 
 
 export const userRoutes = router
