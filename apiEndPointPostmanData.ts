@@ -55,6 +55,54 @@ service
 
 
 
+///-------------- service get all post filter
+
+http://localhost:5000/api/service
+
+http://localhost:5000/api/service?searchTerm=pipe
+
+http://localhost:5000/api/service?searchTerm=clean
+
+http://localhost:5000/api/service?category=Plumbing
+
+http://localhost:5000/api/service?category=Electrical
+
+http://localhost:5000/api/service?location=Dhaka
+
+http://localhost:5000/api/service?location=Chittagong
+
+http://localhost:5000/api/service?priceMin=500
+
+http://localhost:5000/api/service?priceMax=1500
+
+http://localhost:5000/api/service?priceMin=500&priceMax=1500
+
+http://localhost:5000/api/service?rating=4
+
+http://localhost:5000/api/service?page=1&limit=10
+
+http://localhost:5000/api/service?page=2&limit=5
+
+http://localhost:5000/api/service?searchTerm=pipe&page=1&limit=10
+
+http://localhost:5000/api/service?category=Plumbing&location=Dhaka
+
+http://localhost:5000/api/service?category=Electrical&priceMin=300&priceMax=1000
+
+http://localhost:5000/api/service?location=Dhaka&priceMin=500&priceMax=2000
+
+http://localhost:5000/api/service?category=Cleaning&rating=4
+
+http://localhost:5000/api/service?searchTerm=repair&category=Plumbing
+
+http://localhost:5000/api/service?searchTerm=repair&category=Plumbing&location=Dhaka
+
+http://localhost:5000/api/service?searchTerm=repair&category=Plumbing&location=Dhaka&priceMin=300&priceMax=1000
+
+http://localhost:5000/api/service?searchTerm=repair&category=Plumbing&location=Dhaka&priceMin=300&priceMax=1000&rating=4
+
+http://localhost:5000/api/service?searchTerm=repair&category=Plumbing&location=Dhaka&priceMin=300&priceMax=1000&rating=4&page=1&limit=10
+
 
 
 
