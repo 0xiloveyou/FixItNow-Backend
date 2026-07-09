@@ -74,9 +74,23 @@ const cancelBooking = catchAsync(
   }
 );
 
+const getAllBookings = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await bookingService.getAllBookingsFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Bookings retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const bookingController = {
   createBooking,
   getMyBookings,
   getSingleBooking,
   cancelBooking,
+  getAllBookings,
 };

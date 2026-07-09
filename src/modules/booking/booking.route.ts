@@ -12,6 +12,12 @@ router.post(
 );
 
 router.get(
+  "/",
+  auth(Role.ADMIN),
+  bookingController.getAllBookings
+);
+
+router.get(
   "/my",
   auth(Role.CUSTOMER),
   bookingController.getMyBookings)

@@ -234,9 +234,50 @@ const cancelBookingIntoDB = async (
   return result;
 };
 
+const getAllBookingsFromDB = async () => {
+  const bookings = await prisma.booking.findMany({
+    include: {
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+          role: true,
+        },
+      },
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+          role: true,
+        },
+      },
+      service: {
+        include: {
+          category: true,
+        },
+      },
+      slot: true,
+      payment: true,
+      review: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return bookings;
+};
+
 export const bookingService = {
   createBookingIntoDB,
   getMyBookingsFromDB,
   getSingleBookingFromDB,
   cancelBookingIntoDB,
+  getAllBookingsFromDB,
 };
