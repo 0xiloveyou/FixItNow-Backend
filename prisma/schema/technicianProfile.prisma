@@ -8,12 +8,16 @@ model TechnicianProfile {
   experience  Int
   location    String
   hourlyRate  Float
+
+  averageRating Float @default(0)
+  completedJobs Int   @default(0)
+
   verified    Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  services      Service[]
+  services       Service[]
   availabilities Availability[]
 
   @@map("technician_profiles")

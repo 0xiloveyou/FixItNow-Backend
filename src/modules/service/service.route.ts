@@ -23,7 +23,7 @@ router.delete(
 )
 
 router.get("/:id", serviceController.getSingleService)
-
+router.get("/", serviceController.getAllServices);
 
 
 export const serviceRoutes = router
