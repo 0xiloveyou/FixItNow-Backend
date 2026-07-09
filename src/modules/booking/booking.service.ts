@@ -135,7 +135,50 @@ const getMyBookingsFromDB = async (customerId: string) => {
   return bookings;
 };
 
+const getSingleBookingFromDB = async (id: string) => {
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+        },
+      },
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+        },
+      },
+      service: {
+        include: {
+          category: true,
+        },
+      },
+      slot: true,
+      payment: true,
+      review: true,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  return booking;
+};
+
 export const bookingService = {
   createBookingIntoDB,
   getMyBookingsFromDB,
+  getSingleBookingFromDB,
 };
