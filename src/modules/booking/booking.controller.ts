@@ -105,6 +105,26 @@ const getTechnicianBookings = catchAsync(
 );
 
 
+const updateBookingStatus = catchAsync(
+  async (req: Request, res: Response) => {
+    const technicianId = req.user?.id as string;
+    const bookingId = req.params.id;
+
+    const result = await bookingService.updateBookingStatusIntoDB(
+      technicianId,
+      bookingId as string,
+      req.body
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Booking status updated successfully",
+      data: result,
+    });
+  }
+);
+
 export const bookingController = {
   createBooking,
   getMyBookings,
@@ -112,5 +132,5 @@ export const bookingController = {
   cancelBooking,
   getAllBookings,
   getTechnicianBookings,
-  
+  updateBookingStatus,
 };

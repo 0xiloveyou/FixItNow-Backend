@@ -34,13 +34,18 @@ router.get(
   bookingController.getSingleBooking
 );
 
+
 router.patch(
   "/:id/cancel",
   auth(Role.CUSTOMER),
   bookingController.cancelBooking
 );
 
-
+router.patch(
+  "/:id/status",
+  auth(Role.TECHNICIAN),
+  bookingController.updateBookingStatus
+);
 
 
 export const bookingRoutes = router

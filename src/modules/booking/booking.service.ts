@@ -1,4 +1,4 @@
-import { IBookingPayload } from "./booking.interface";
+import { IBookingPayload, IUpdateBookingStatusPayload } from "./booking.interface";
 import bcrypt from "bcryptjs"
 import config from "../../config"
 import { prisma } from "../../lib/prisma"
@@ -306,6 +306,90 @@ const getTechnicianBookingsFromDB = async (technicianId: string) => {
   return bookings;
 };
 
+const updateBookingStatusIntoDB = async (
+  technicianId: string,
+  bookingId: string,
+  payload: IUpdateBookingStatusPayload
+) => {
+  const { status } = payload;
+
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id: bookingId,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  if (booking.technicianId !== technicianId) {
+    throw new Error("You are not authorized");
+  }
+
+  if (
+    status === BookingStatus.ACCEPTED &&
+    booking.status !== BookingStatus.REQUESTED
+  ) {
+    throw new Error("Only requested bookings can be accepted");
+  }
+
+  if (
+    status === BookingStatus.DECLINED &&
+    booking.status !== BookingStatus.REQUESTED
+  ) {
+    throw new Error("Only requested bookings can be declined");
+  }
+
+  if (
+    status === BookingStatus.IN_PROGRESS &&
+    booking.status !== BookingStatus.PAID
+  ) {
+    throw new Error("Booking must be paid first");
+  }
+
+  if (
+    status === BookingStatus.COMPLETED &&
+    booking.status !== BookingStatus.IN_PROGRESS
+  ) {
+    throw new Error("Booking must be in progress");
+  }
+
+  const updatedBooking = await prisma.booking.update({
+    where: {
+      id: bookingId,
+    },
+    data: {
+      status,
+    },
+    include: {
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+        },
+      },
+      technician: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          phone: true,
+          profileImage: true,
+        },
+      },
+      service: true,
+      slot: true,
+      payment: true,
+    },
+  });
+
+  return updatedBooking;
+};
+
 export const bookingService = {
   createBookingIntoDB,
   getMyBookingsFromDB,
@@ -313,5 +397,5 @@ export const bookingService = {
   cancelBookingIntoDB,
   getAllBookingsFromDB,
   getTechnicianBookingsFromDB,
-  
+  updateBookingStatusIntoDB,
 };
