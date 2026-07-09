@@ -177,8 +177,66 @@ const getSingleBookingFromDB = async (id: string) => {
   return booking;
 };
 
+const cancelBookingIntoDB = async (
+  bookingId: string,
+  customerId: string
+) => {
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id: bookingId,
+    },
+    include: {
+      slot: true,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  if (booking.customerId !== customerId) {
+    throw new Error("You are not authorized to cancel this booking");
+  }
+
+  if (
+    booking.status === BookingStatus.IN_PROGRESS ||
+    booking.status === BookingStatus.COMPLETED
+  ) {
+    throw new Error("This booking cannot be cancelled");
+  }
+
+  const result = await prisma.$transaction(async (tx) => {
+    const updatedBooking = await tx.booking.update({
+      where: {
+        id: bookingId,
+      },
+      data: {
+        status: BookingStatus.CANCELLED,
+      },
+      include: {
+        service: true,
+        slot: true,
+      },
+    });
+
+    await tx.availability.update({
+      where: {
+        id: booking.slotId,
+      },
+      data: {
+        status: AvailabilityStatus.AVAILABLE,
+      },
+    });
+
+    return updatedBooking;
+  });
+
+  return result;
+};
+
 export const bookingService = {
   createBookingIntoDB,
   getMyBookingsFromDB,
   getSingleBookingFromDB,
+  cancelBookingIntoDB,
 };
