@@ -58,10 +58,28 @@ const updateAvailability = catchAsync(
   }
 );
 
+
+const deleteAvailability = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const userId = req.user?.id as string;
+
+    await availabilityService.deleteAvailabilityFromDB(id, userId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Availability deleted successfully",
+      data: null,
+    });
+  }
+);
+
 export const availabilityController = {
   createAvailability,
   getMyAvailability,
   updateAvailability,
+  deleteAvailability,
   
 }
 

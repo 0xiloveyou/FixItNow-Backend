@@ -118,9 +118,48 @@ const updateAvailabilityIntoDB = async (
   return updatedAvailability;
 };
 
+const deleteAvailabilityFromDB = async (
+  id: string,
+  userId: string
+) => {
+  const technician = await prisma.technicianProfile.findUnique({
+    where: {
+      userId,
+    },
+  });
+
+  if (!technician) {
+    throw new Error("Technician profile not found");
+  }
+
+  const availability = await prisma.availability.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!availability) {
+    throw new Error("Availability not found");
+  }
+
+  if (availability.technicianId !== technician.id) {
+    throw new Error("You are not authorized to delete this availability");
+  }
+
+  await prisma.availability.delete({
+    where: {
+      id,
+    },
+  });
+
+  return null;
+};
+
+
 export const availabilityService = {
   createAvailabilityIntoDB,
   getMyAvailabilityFromDB,
   updateAvailabilityIntoDB,
-
+  deleteAvailabilityFromDB,
+  
 }

@@ -24,4 +24,10 @@ router.patch(
   availabilityController.updateAvailability
 );
 
+router.delete(
+  "/:id",
+  auth(Role.TECHNICIAN),
+  availabilityController.deleteAvailability
+);
+
 export const availabilityRoutes = router
