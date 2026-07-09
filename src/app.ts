@@ -108,7 +108,7 @@ app.use("/api/technician", technicianRoutes)
 app.use("/api/category", categoryRoutes)
 app.use("/api/service", serviceRoutes)
 app.use("/api/admin", adminRoutes)
-app.use("/api/admin", availabilityRoutes)
+app.use("/api/availability", availabilityRoutes)
 
 
 // /// sometimes we hit unknown url
