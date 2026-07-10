@@ -75,9 +75,30 @@ const getSinglePayment = catchAsync(
   }
 );
 
+
+const createCheckoutSession = catchAsync(
+  async (req: Request, res: Response) => {
+    const customerId = req.user?.id as string;
+    const payload = req.body;
+
+    const result = await paymentService.createCheckoutSessionIntoDB(
+      customerId,
+      payload
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "Checkout session created successfully",
+      data: result,
+    });
+  }
+);
+
 export const paymentController = {
   createPaymentIntent,
   handleWebhook,
   getMyPayments,
   getSinglePayment,
+  createCheckoutSession
 };

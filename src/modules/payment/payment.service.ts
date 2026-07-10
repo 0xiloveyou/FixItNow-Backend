@@ -192,10 +192,115 @@ const getSinglePaymentFromDB = async (
   return payment;
 };
 
+const createCheckoutSessionIntoDB = async (
+  customerId: string,
+  payload: ICreatePaymentPayload
+) => {
+  const { bookingId } = payload;
+
+  const booking = await prisma.booking.findUnique({
+    where: {
+      id: bookingId,
+    },
+    include: {
+      service: true,
+    },
+  });
+
+  if (!booking) {
+    throw new Error("Booking not found");
+  }
+
+  if (booking.customerId !== customerId) {
+    throw new Error("You are not authorized");
+  }
+
+  if (booking.status !== BookingStatus.ACCEPTED) {
+    throw new Error("Booking is not ready for payment");
+  }
+
+  const existingPayment = await prisma.payment.findUnique({
+    where: {
+      bookingId,
+    },
+  });
+
+  if (
+    existingPayment &&
+    existingPayment.status === PaymentStatus.COMPLETED
+  ) {
+    throw new Error("Booking already paid.");
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    mode: "payment",
+
+    payment_method_types: ["card"],
+
+    line_items: [
+      {
+        price_data: {
+          currency: "bdt",
+          product_data: {
+            name: booking.service.title,
+            description: booking.service.description,
+          },
+          unit_amount: Math.round(booking.totalPrice * 100),
+        },
+        quantity: 1,
+      },
+    ],
+
+    metadata: {
+      bookingId: booking.id,
+      customerId: booking.customerId,
+    },
+
+    success_url: `${config.app_url}/payment-success`,
+    cancel_url: `${config.app_url}/payment-cancel`,
+  });
+
+  if (existingPayment) {
+    await prisma.payment.update({
+      where: {
+        id: existingPayment.id,
+      },
+      data: {
+        // Save Checkout Session ID for now
+        transactionId: session.id,
+        provider: PaymentProvider.STRIPE,
+        paymentMethod: "CARD",
+        amount: booking.totalPrice,
+        currency: "BDT",
+        status: PaymentStatus.PENDING,
+      },
+    });
+  } else {
+    await prisma.payment.create({
+      data: {
+        bookingId: booking.id,
+        // Save Checkout Session ID for now
+        transactionId: session.id,
+        provider: PaymentProvider.STRIPE,
+        paymentMethod: "CARD",
+        amount: booking.totalPrice,
+        currency: "BDT",
+        status: PaymentStatus.PENDING,
+      },
+    });
+  }
+
+  return {
+    checkoutUrl: session.url,
+    sessionId: session.id,
+  };
+};
+
 
 export const paymentService = {
   createPaymentIntentIntoDB,
   handleWebhook,
   getMyPaymentsFromDB,
   getSinglePaymentFromDB,
+  createCheckoutSessionIntoDB
 };
