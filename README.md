@@ -8,8 +8,7 @@ processed with Stripe.
 
 ## Entity Relationship Diagram (ERD)
 
-![ERD Diagram](./ERD%20Diagram.png)
-
+![ERD Diagram](Erd%20Diagram.png)
 
 
 ## Tech Stack
