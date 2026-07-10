@@ -15,4 +15,9 @@ router.get(
   reviewController.getTechnicianReviews
 );
 
+router.delete(
+  "/:id",
+  auth(Role.ADMIN),
+  reviewController.deleteReview);
+
 export const reviewRoutes = router;

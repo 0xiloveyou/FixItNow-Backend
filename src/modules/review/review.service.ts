@@ -116,7 +116,60 @@ const getTechnicianReviewsFromDB = async (technicianId: string) => {
   });
 };
 
+
+const deleteReviewFromDB = async (reviewId: string) => {
+  const review = await prisma.review.findUnique({
+    where: {
+      id: reviewId,
+    },
+  });
+
+  if (!review) {
+    throw new Error("Review not found.");
+  }
+
+  await prisma.review.delete({
+    where: {
+      id: reviewId,
+    },
+  });
+
+  // Recalculate technician rating
+  const reviewStats = await prisma.review.aggregate({
+    where: {
+      technicianId: review.technicianId,
+    },
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      rating: true,
+    },
+  });
+
+  const technicianProfile = await prisma.technicianProfile.findUnique({
+    where: {
+      userId: review.technicianId,
+    },
+  });
+
+  if (technicianProfile) {
+    await prisma.technicianProfile.update({
+      where: {
+        id: technicianProfile.id,
+      },
+      data: {
+        averageRating: reviewStats._avg.rating ?? 0,
+        completedJobs: reviewStats._count.rating,
+      },
+    });
+  }
+
+  return null;
+};
+
 export const reviewService = {
   createReviewIntoDB,
   getTechnicianReviewsFromDB,
+  deleteReviewFromDB,
 };
