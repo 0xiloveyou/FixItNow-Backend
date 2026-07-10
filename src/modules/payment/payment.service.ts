@@ -65,6 +65,7 @@ const payment = await prisma.payment.create({
   },
 });
 
+
   return {
     payment,
     clientSecret: paymentIntent.client_secret,
