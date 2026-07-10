@@ -160,11 +160,42 @@ const getMyPaymentsFromDB = async (customerId: string) => {
 };
 
 
+const getSinglePaymentFromDB = async (
+  customerId: string,
+  paymentId: string
+) => {
+  const payment = await prisma.payment.findUnique({
+    where: {
+      id: paymentId,
+    },
+    include: {
+      booking: {
+        include: {
+          service: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      },
+    },
+  });
 
+  if (!payment) {
+    throw new Error("Payment not found");
+  }
+
+  if (payment.booking.customerId !== customerId) {
+    throw new Error("You are not authorized");
+  }
+
+  return payment;
+};
 
 
 export const paymentService = {
   createPaymentIntentIntoDB,
   handleWebhook,
   getMyPaymentsFromDB,
+  getSinglePaymentFromDB,
 };

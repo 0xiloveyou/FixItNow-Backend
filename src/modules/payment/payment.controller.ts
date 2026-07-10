@@ -63,7 +63,7 @@ const getSinglePayment = catchAsync(
 
     const result = await paymentService.getSinglePaymentFromDB(
       customerId,
-      paymentId
+      paymentId as string
     );
 
     sendResponse(res, {
