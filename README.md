@@ -6,6 +6,12 @@ FixItNow is a backend API for a home service marketplace where customers
 can book technicians, technicians manage jobs, and payments are
 processed with Stripe.
 
+## Entity Relationship Diagram (ERD)
+
+![ERD Diagram](./ERD%20Diagram.png)
+
+
+
 ## Tech Stack
 
 -   Node.js
@@ -15,7 +21,7 @@ processed with Stripe.
 -   PostgreSQL
 -   JWT Authentication
 -   Stripe
--   Zod
+
 
 ## Features
 
