@@ -1,10 +1,16 @@
-import Stripe from "stripe";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
-import { BookingStatus, PaymentProvider, PaymentStatus } from "../../../generated/prisma/enums";
-import { ICreatePaymentPayload } from "./payment.interface";
 import config from "../../config";
-import { handlePaymentFailed, handlePaymentSucceeded } from "../../utils/payment.utils";
+import {
+  BookingStatus,
+  PaymentProvider,
+  PaymentStatus,
+} from "../../../generated/prisma/enums";
+import { ICreatePaymentPayload } from "./payment.interface";
+import {
+  handlePaymentFailed,
+  handlePaymentSucceeded,
+} from "../../utils/payment.utils";
 
 const createPaymentIntentIntoDB = async (
   customerId: string,
@@ -33,18 +39,22 @@ const createPaymentIntentIntoDB = async (
     throw new Error("Booking is not ready for payment");
   }
 
-  // Prevent duplicate payment
+  // Check existing payment
   const existingPayment = await prisma.payment.findUnique({
     where: {
       bookingId,
     },
   });
 
-  if (existingPayment) {
-    throw new Error("Payment already exists for this booking");
+  // Already paid
+  if (
+    existingPayment &&
+    existingPayment.status === PaymentStatus.COMPLETED
+  ) {
+    throw new Error("This booking has already been paid.");
   }
 
-  // Create Stripe Payment Intent
+  // Create new Stripe Payment Intent
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(booking.totalPrice * 100),
     currency: "bdt",
@@ -54,19 +64,41 @@ const createPaymentIntentIntoDB = async (
     },
   });
 
-  // Save payment
-const payment = await prisma.payment.create({
-  data: {
-    bookingId: booking.id,
-    transactionId: paymentIntent.id,
-    provider: PaymentProvider.STRIPE,
-    paymentMethod: "CARD",
-    amount: booking.totalPrice,
-    currency: "BDT",
-    status: PaymentStatus.PENDING,
-  },
-});
+  // Update existing pending payment
+  if (existingPayment) {
+    await prisma.payment.update({
+      where: {
+        bookingId,
+      },
+      data: {
+        transactionId: paymentIntent.id,
+        provider: PaymentProvider.STRIPE,
+        paymentMethod: "CARD",
+        amount: booking.totalPrice,
+        currency: "BDT",
+        status: PaymentStatus.PENDING,
+      },
+    });
+  } else {
+    // Create new payment
+    await prisma.payment.create({
+      data: {
+        bookingId: booking.id,
+        transactionId: paymentIntent.id,
+        provider: PaymentProvider.STRIPE,
+        paymentMethod: "CARD",
+        amount: booking.totalPrice,
+        currency: "BDT",
+        status: PaymentStatus.PENDING,
+      },
+    });
+  }
 
+  const payment = await prisma.payment.findUnique({
+    where: {
+      bookingId,
+    },
+  });
 
   return {
     payment,

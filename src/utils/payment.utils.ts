@@ -18,6 +18,11 @@ export const handlePaymentSucceeded = async (
     return;
   }
 
+  // Prevent duplicate webhook processing
+  if (payment.status === PaymentStatus.COMPLETED) {
+    return;
+  }
+
   await prisma.$transaction(async (tx) => {
     await tx.payment.update({
       where: {
@@ -53,6 +58,11 @@ export const handlePaymentFailed = async (
 
   if (!payment) {
     console.log(`Webhook: Payment not found for ${transactionId}`);
+    return;
+  }
+
+  // Don't overwrite a successful payment
+  if (payment.status === PaymentStatus.COMPLETED) {
     return;
   }
 
