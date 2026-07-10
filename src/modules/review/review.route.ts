@@ -10,4 +10,9 @@ router.post(
   auth(Role.CUSTOMER),
   reviewController.createReview);
 
+router.get(
+  "/technician/:technicianId",
+  reviewController.getTechnicianReviews
+);
+
 export const reviewRoutes = router;

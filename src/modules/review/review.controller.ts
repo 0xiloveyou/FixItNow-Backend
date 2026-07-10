@@ -22,7 +22,24 @@ const createReview = catchAsync(
   }
 );
 
+const getTechnicianReviews = catchAsync(
+  async (req: Request, res: Response) => {
+    const { technicianId } = req.params;
+
+    const result = await reviewService.getTechnicianReviewsFromDB(
+      technicianId as string
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Technician reviews retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const reviewController = {
   createReview,
-
+  getTechnicianReviews,
 };
