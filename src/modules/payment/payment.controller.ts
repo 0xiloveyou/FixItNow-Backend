@@ -40,7 +40,44 @@ const handleWebhook = async (
   });
 };
 
+const getMyPayments = catchAsync(
+  async (req: Request, res: Response) => {
+    const customerId = req.user?.id as string;
+
+    const result = await paymentService.getMyPaymentsFromDB(customerId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My payments retrieved successfully",
+      data: result,
+    });
+  }
+);
+
+
+const getSinglePayment = catchAsync(
+  async (req: Request, res: Response) => {
+    const customerId = req.user?.id as string;
+    const paymentId = req.params.id;
+
+    const result = await paymentService.getSinglePaymentFromDB(
+      customerId,
+      paymentId
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Payment retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const paymentController = {
   createPaymentIntent,
-  handleWebhook
+  handleWebhook,
+  getMyPayments,
+  getSinglePayment,
 };

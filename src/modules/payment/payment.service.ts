@@ -133,7 +133,38 @@ const handleWebhook = async (
   }
 };
 
+const getMyPaymentsFromDB = async (customerId: string) => {
+  const payments = await prisma.payment.findMany({
+    where: {
+      booking: {
+        customerId,
+      },
+    },
+    include: {
+      booking: {
+        include: {
+          service: {
+            include: {
+              category: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  return payments;
+};
+
+
+
+
+
 export const paymentService = {
   createPaymentIntentIntoDB,
   handleWebhook,
+  getMyPaymentsFromDB,
 };
