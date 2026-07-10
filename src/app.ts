@@ -15,7 +15,7 @@ import { serviceRoutes } from "./modules/service/service.route";
 import { adminRoutes } from "./modules/admin/admin.route";
 import { availabilityRoutes } from "./modules/availability/availability.route";
 import { bookingRoutes } from "./modules/booking/booking.route";
-import { PaymentRoutes } from "./modules/payment/payment.route";
+import { paymentRoutes } from "./modules/payment/payment.route";
 // import { subscriptionRoutes } from "./modules/subscription/subscription.route";
 // import { stripe } from "./lib/stripe";
 // import { premiumRoutes } from "./modules/premium/premium.route";
@@ -118,7 +118,7 @@ app.use("/api/service", serviceRoutes)
 app.use("/api/admin", adminRoutes)
 app.use("/api/availability", availabilityRoutes)
 app.use("/api/bookings", bookingRoutes)
-app.use("/api/payments", PaymentRoutes);
+app.use("/api/payments", paymentRoutes);
 
 // /// sometimes we hit unknown url
 // /*
