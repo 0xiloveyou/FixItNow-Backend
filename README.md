@@ -10,6 +10,9 @@ processed with Stripe.
 
 ![ERD Diagram](Erd%20Diagram.png)
 
+##  API Documentation
+
+[![Postman Collection](https://img.shields.io/badge/Postman-Collection-orange?logo=postman)](https://github.com/0xiloveyou/FixItNow-Backend/blob/main/FixItNow-Backend.postman_collection.json)
 
 ## Tech Stack
 
