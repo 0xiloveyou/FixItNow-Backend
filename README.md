@@ -14,6 +14,14 @@ processed with Stripe.
 
 [![Postman Collection](https://img.shields.io/badge/Postman-Collection-orange?logo=postman)](https://github.com/0xiloveyou/FixItNow-Backend/blob/main/FixItNow-Backend.postman_collection.json)
 
+
+## Special Notes
+
+While building this project, I documented important implementation notes, design decisions, and development references.
+
+**Developer Notes:**  
+https://github.com/0xiloveyou/FixItNow-Backend/blob/main/note.ts
+
 ## Tech Stack
 
 -   Node.js
