@@ -187,7 +187,11 @@ now add the secret to env
 
 -------
 
-
+to check /webhook route :
+payment intent : 
+using terminal : 
+> stripe trigger payment_intent.succeeded
+ > stripe trigger payment_intent.payment_failed
 
 
 
